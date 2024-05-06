@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class LongestCommonSubsequenceDP {
 
     // Method to find the length of LCS using dynamic programming
@@ -28,8 +30,11 @@ public class LongestCommonSubsequenceDP {
 
     // Main method to test the implementation
     public static void main(String[] args) {
-        String s1 = "AGGTAB";
-        String s2 = "GXTXAYB";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the first string:");
+        String s1 = scanner.nextLine();
+        System.out.println("Enter the second string:");
+        String s2 = scanner.nextLine();
         System.out.println("Length of LCS: " + lcs(s1, s2));
     }
 }

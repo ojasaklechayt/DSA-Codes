@@ -58,31 +58,37 @@
 class Solution {
 public:
     int minPathSum(vector<vector<int>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
+        int n = grid.size(); // Number of rows in the grid
+        int m = grid[0].size(); // Number of columns in the grid
 
-        vector<vector<int>> dp(n, vector<int>(m, 0));
-
-        // Base case: Initialize the bottom-right cell
-        dp[n - 1][m - 1] = grid[n - 1][m - 1];
-
-        // Initialize the bottom row
+        // Initialize the bottom row: 
+        // We start from the second last column and move towards the first column
+        // We add the value of the cell to the right to the current cell
+        // This represents the minimum path sum from each cell to the bottom-right cell
         for (int j = m - 2; j >= 0; j--) {
-            dp[n - 1][j] = grid[n - 1][j] + dp[n - 1][j + 1];
+            grid[n - 1][j] += grid[n - 1][j + 1];
         }
 
-        // Initialize the rightmost column
+        // Initialize the rightmost column:
+        // We start from the second last row and move towards the first row
+        // We add the value of the cell below to the current cell
+        // This represents the minimum path sum from each cell to the bottom-right cell
         for (int i = n - 2; i >= 0; i--) {
-            dp[i][m - 1] = grid[i][m - 1] + dp[i + 1][m - 1];
+            grid[i][m - 1] += grid[i + 1][m - 1];
         }
 
-        // Build up the dp table
+        // Build up the grid:
+        // We start from the second last row and move towards the first row
+        // Within each row, we start from the second last column and move towards the first column
+        // For each cell, we add the minimum of the value of the cell to its right and the cell below it
+        // This represents the minimum path sum from each cell to the bottom-right cell
         for (int i = n - 2; i >= 0; i--) {
             for (int j = m - 2; j >= 0; j--) {
-                dp[i][j] = grid[i][j] + min(dp[i][j + 1], dp[i + 1][j]);
+                grid[i][j] += min(grid[i][j + 1], grid[i + 1][j]);
             }
         }
 
-        return dp[0][0];
+        // Return the minimum path sum from the top-left cell to the bottom-right cell
+        return grid[0][0];
     }
 };

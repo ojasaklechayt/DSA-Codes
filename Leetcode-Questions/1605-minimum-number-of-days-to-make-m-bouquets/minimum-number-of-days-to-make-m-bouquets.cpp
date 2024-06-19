@@ -1,54 +1,42 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 class Solution {
 public:
-    int minDays(vector<int>& bloomDay, int m, int k) {
-        int mini = INT_MAX;
-        int maxi = INT_MIN;
-        int n = bloomDay.size();
-
-        // edges case
-        if (static_cast<long long>(m) * k > n) return -1;  // Use long long for m * k
-
-        for (int i = 0; i < n; i++) {
-            mini = min(mini, bloomDay[i]);
-            maxi = max(maxi, bloomDay[i]);
-        }
-
-        int low = mini;
-        int high = maxi;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            int ans = CountBouquets(bloomDay, k, m, mid);
-
-            if (ans >= m) {
-                high = mid - 1;
+    bool canMakeBouquets(std::vector<int>& bloomDay, int m, int k, int64_t days) {
+        int64_t bouquets = 0;
+        int64_t flowers = 0;
+        
+        for (int i = 0; i < bloomDay.size(); ++i) {
+            if (bloomDay[i] <= days) {
+                flowers++;
+                if (flowers == k) {
+                    bouquets++;
+                    flowers = 0;
+                }
             } else {
-                low = mid + 1;
+                flowers = 0;
             }
         }
-
-        return low; 
+        
+        return bouquets >= m;
     }
-
-private:
-    int CountBouquets(vector<int>& arr, int k, int m, int middle) {
-        int count = 0;
-        int totalBouquet = 0;
-        int n = arr.size();
-
-        for (int i = 0; i < n; i++) {
-            if (arr[i] <= middle) {
-                count++;
+    
+    int minDays(std::vector<int>& bloomDay, int m, int k) {
+        int n = bloomDay.size();
+        if (static_cast<int64_t>(m) * k > n) {
+            return -1;
+        }
+        
+        int64_t left = 1;
+        int64_t right = *max_element(bloomDay.begin(), bloomDay.end());
+        
+        while (left < right) {
+            int64_t mid = left + (right - left) / 2;
+            if (canMakeBouquets(bloomDay, m, k, mid)) {
+                right = mid;
             } else {
-                totalBouquet += count / k;
-                count = 0;
+                left = mid + 1; 
             }
         }
-
-        totalBouquet += count / k;
-        return totalBouquet;
+        
+        return left;
     }
 };

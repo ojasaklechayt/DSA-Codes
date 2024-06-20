@@ -44,3 +44,19 @@ private:
         return false;
     }
 };
+
+// Important part of code that is asked in coding tests
+// void main(){
+//     Solution solution;
+//     vector<int> position;
+//     int num;
+//     while(cin >> num){
+//         position.push_back(num);
+//     }
+
+//     int m;
+//     cin>>m;
+
+//     int result = solution.maxDistance(position, m);
+//     cout << result << endl;
+// }

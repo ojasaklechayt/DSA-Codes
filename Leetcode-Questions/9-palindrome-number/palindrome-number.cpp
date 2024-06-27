@@ -12,21 +12,42 @@
 //     }
 // };
 
+// class Solution {
+// public:
+//     bool isPalindrome(int x) {
+//         string num = to_string(x);
+//         int left = 0;
+//         int right = num.size() - 1;
+
+//         while(left < right){
+//             if(num[left]!=num[right]){
+//                 return false;
+//             }
+//             left++;
+//             right--;
+//         }
+
+//         return true;
+//     }
+// };
 
 class Solution {
 public:
     bool isPalindrome(int x) {
         string num = to_string(x);
-        int left = 0;
-        int right = num.size() - 1;
+        stack<char> st;
 
-        while(left < right){
-            if(num[left]!=num[right]){
+        for(char c: num){
+            st.push(c);
+        }
+
+        for(char c: num){
+            char ct = st.top();
+            st.pop();
+
+            if(c != ct){
                 return false;
             }
-            
-            left++;
-            right--;
         }
 
         return true;

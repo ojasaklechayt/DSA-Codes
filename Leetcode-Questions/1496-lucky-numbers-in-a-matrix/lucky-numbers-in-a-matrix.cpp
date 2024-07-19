@@ -27,39 +27,72 @@
 // };
 
 
+// class Solution {
+// public:
+//     vector<int> luckyNumbers(vector<vector<int>>& matrix) {
+//         int n = matrix.size();
+//         int m = matrix[0].size();
+
+//         vector<int> rows;
+//         for(int i=0; i<n; i++){
+//             int xt = INT_MAX;
+//             for(int j=0; j<m; j++){
+//                 xt = min(xt, matrix[i][j]);
+//             }
+//             rows.push_back(xt);
+//         }
+
+//         vector<int> cols;
+//         for(int i=0; i<m; i++){
+//             int yt = INT_MIN;
+//             for(int j=0; j<n; j++){
+//                 yt = max(yt, matrix[j][i]);
+//             }
+//             cols.push_back(yt);
+//         }
+
+//         vector<int> luckynumber;
+//         for(int i=0; i<n; i++){
+//             for(int j=0; j<m; j++){
+//                 if(matrix[i][j] == rows[i] && matrix[i][j] == cols[j]){
+//                     luckynumber.push_back(matrix[i][j]);
+//                 }
+//             }
+//         }
+
+//         return luckynumber;
+//     }
+// };
+
 class Solution {
 public:
-    vector<int> luckyNumbers(vector<vector<int>>& matrix) {
-        int n = matrix.size();
-        int m = matrix[0].size();
+    vector<int> luckyNumbers (vector<vector<int>>& matrix) {
+        int N = matrix.size(), M = matrix[0].size();
+        
+        int rMinMax = INT_MIN;
+        for (int i = 0; i < N; i++) {
 
-        vector<int> rows;
-        for(int i=0; i<n; i++){
-            int xt = INT_MAX;
-            for(int j=0; j<m; j++){
-                xt = min(xt, matrix[i][j]);
+            int rMin = INT_MAX;
+            for (int j = 0; j < M; j++) {
+                rMin = min(rMin, matrix[i][j]);
             }
-            rows.push_back(xt);
+            rMinMax = max(rMinMax, rMin);
         }
+        
+        int cMaxMin = INT_MAX;
+        for (int i = 0; i < M; i++) {
 
-        vector<int> cols;
-        for(int i=0; i<m; i++){
-            int yt = INT_MIN;
-            for(int j=0; j<n; j++){
-                yt = max(yt, matrix[j][i]);
+            int cMax = INT_MIN;
+            for (int j = 0; j < N; j++) {
+                cMax = max(cMax, matrix[j][i]);
             }
-            cols.push_back(yt);
+            cMaxMin = min(cMaxMin, cMax);
         }
-
-        vector<int> luckynumber;
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(matrix[i][j] == rows[i] && matrix[i][j] == cols[j]){
-                    luckynumber.push_back(matrix[i][j]);
-                }
-            }
+        
+        if (rMinMax == cMaxMin) {
+            return {rMinMax};
         }
-
-        return luckynumber;
+        
+        return {};
     }
 };

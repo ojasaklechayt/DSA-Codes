@@ -1,45 +1,42 @@
-#include <cmath> 
 class MedianFinder {
+private:
+    priority_queue<int> maxHeap; // Max heap for the lower half
+    priority_queue<int, vector<int>, greater<int>> minHeap; // Min heap for the upper half
+
 public:
-    priority_queue<int>mx;
-    priority_queue<int,vector<int>,greater<int>>mn;
     MedianFinder() {
-      
+        // Initialize heaps
     }
     
     void addNum(int num) {
-         if (mx.empty() || num <= mx.top()) {
-            mx.push(num);
-        } else {
-            mn.push(num);
+        // Add to maxHeap (lower half)
+        maxHeap.push(num);
+        
+        // Ensure the largest of the lower half is not greater than the smallest of the upper half
+        if (!minHeap.empty() && maxHeap.top() > minHeap.top()) {
+            int toMove = maxHeap.top();
+            maxHeap.pop();
+            minHeap.push(toMove);
         }
-        // added the element now need to make sure the size diffrence is maintained
-        int x=mx.size();
-        int n=mn.size();
-        if(x-n>1||n-x>1){
-            if(mx.size()>mn.size()){
-                mn.push(mx.top());
-                mx.pop();
-            }else{
-                mx.push(mn.top());
-                mn.pop();
-            }
+        
+        // Balance the sizes of the two heaps
+        if (maxHeap.size() > minHeap.size() + 1) {
+            int toMove = maxHeap.top();
+            maxHeap.pop();
+            minHeap.push(toMove);
+        } else if (minHeap.size() > maxHeap.size()) {
+            int toMove = minHeap.top();
+            minHeap.pop();
+            maxHeap.push(toMove);
         }
-
     }
     
     double findMedian() {
-        if(mx.size()==mn.size()){
-            // we have an even case 
-            double sum=mx.top()+mn.top();
-            return sum/2.0;
-        }else{
-            // the odd case
-            if(mx.size()>mn.size()){
-                return mx.top();
-            }else return mn.top();
+        if (maxHeap.size() > minHeap.size()) {
+            return maxHeap.top();
+        } else {
+            return (maxHeap.top() + minHeap.top()) / 2.0;
         }
-        
     }
 };
 

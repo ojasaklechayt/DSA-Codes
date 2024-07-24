@@ -20,26 +20,27 @@ public:
 */
 
 class Solution {
+public:
+    unordered_map<int, Node*> visited;
+    Node* cloneGraph(Node* node) {
+        if (node == nullptr)
+            return node;
+        if (node->neighbors.empty())
+            return new Node(node->val);
+        return helperclone(node, visited);
+    }
 
 private:
-    Node* helperclone(Node* &node, unordered_map<int, Node*> &visited){
+    Node* helperclone(Node*& node, unordered_map<int, Node*> &visited) {
         Node* t = new Node(node->val);
         visited[node->val] = t;
-        for(Node* nnode: node->neighbors){
-            if(visited.find(nnode->val) == visited.end()){
+        for (Node* nnode : node->neighbors) {
+            if (visited.find(nnode->val) == visited.end()) {
                 t->neighbors.push_back(helperclone(nnode, visited));
             } else {
                 t->neighbors.push_back(visited[nnode->val]);
             }
         }
         return t;
-    }
-
-public:
-    unordered_map<int, Node*> visited;
-    Node* cloneGraph(Node* node) {
-        if(node == nullptr) return node;
-        if(node->neighbors.empty()) return new Node(node->val);
-        return helperclone(node,visited);
     }
 };

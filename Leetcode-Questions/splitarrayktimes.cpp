@@ -1,4 +1,4 @@
-void splitarray(int index, int k, vector<vector<int>> current, vector<vector<vector<int>>> result)
+void splitarray(int index, int k, vector<vector<int>> current, vector<vector<vector<int>>> result, vector<int> nums)
 {
     
     if(index == nums.size()){
@@ -23,6 +23,6 @@ vector<vector<vector<int>>>  splitted(vector<int>& nums, k)
 {
     vector<vector<vector<int>>> result;
     vector<vector<int>> current;
-    splitarray(0, k, nums, current, result);
+    splitarray(0, k, nums, current, result, nums);
     return result;
 }

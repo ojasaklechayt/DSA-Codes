@@ -6,31 +6,32 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        if (root == nullptr)
-            return;
-        
+        if(root == nullptr) return;
+
         TreeNode* dummy = new TreeNode(0);
         TreeNode* prev = dummy;
 
         stack<TreeNode*> st;
         st.push(root);
+
         while(!st.empty()){
-            TreeNode* current = st.top();
+            TreeNode* top = st.top();
             st.pop();
 
-            prev->right = current;
+            prev->right = top;
             prev->left = nullptr;
-            prev = current;
+            prev = top;
 
-            if(current->right) st.push(current->right);
-            if(current->left) st.push(current->left);
+            if(top->right) st.push(top->right);
+            if(top->left) st.push(top->left);
         }
+
+        root = prev;
     }
 };

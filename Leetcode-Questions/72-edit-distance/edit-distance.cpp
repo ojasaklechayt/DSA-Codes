@@ -1,51 +1,29 @@
 class Solution {
 public:
     int minDistance(string word1, string word2) {
-        // Get the lengths of both words
-        int i = word1.length();
-        int j = word2.length();
-        
-        // Initialize a DP table with dimensions (i+1) x (j+1) and fill it with -1
-        // This table will be used to store results of subproblems
-        vector<vector<int>> dp(i + 1, vector<int>(j + 1, -1));
-        
-        // Call the recursive function to compute the minimum distance
-        return totalcount(word1, word2, i, j, dp);
-    }
+        int m = word1.size();
+        int n = word2.size();
 
-private:
-    int totalcount(const string& word1, const string& word2, int i, int j,
-                   vector<vector<int>>& dp) {
-        // Base case: if word1 is exhausted, return the length of the remaining word2
-        if (i == 0) {
-            return j;
+        vector<vector<int>> dp(m+1, vector<int>(n+1,0));
+
+        for(int i=0; i<=m; i++){
+            dp[i][0] = i;
         }
 
-        // Base case: if word2 is exhausted, return the length of the remaining word1
-        if (j == 0) {
-            return i;
+        for(int j=0; j<=n; j++){
+            dp[0][j] = j;
         }
 
-        // If the result for this subproblem is already computed, return it
-        if (dp[i][j] != -1) {
-            return dp[i][j];
+        for(int i=1; i<=m; i++){
+            for(int j=1; j<=n; j++){
+                if(word1[i-1] == word2[j-1]){
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = 1 + min(dp[i-1][j], min(dp[i][j-1], dp[i-1][j-1]));
+                }
+            }
         }
 
-        // If the last characters of both words are the same, no operation is needed for this character
-        // Move to the next pair of characters
-        if (word1[i - 1] == word2[j - 1]) {
-            dp[i][j] = totalcount(word1, word2, i - 1, j - 1, dp);
-        } else {
-            // If the last characters are different, consider all three operations:
-            // 1. Deleting a character from word1 (move i back)
-            // 2. Inserting a character into word1 (move j back)
-            // 3. Replacing a character in word1 (move both i and j back)
-            dp[i][j] = 1 + min(totalcount(word1, word2, i - 1, j, dp),       // Delete
-                               min(totalcount(word1, word2, i - 1, j - 1, dp), // Replace
-                                   totalcount(word1, word2, i, j - 1, dp)));    // Insert
-        }
-
-        // Return the computed result for this subproblem
-        return dp[i][j];
+        return dp[m][n];
     }
 };
